@@ -1,0 +1,19 @@
+image: gradle:alpine
+
+default:
+  tags:
+    - shell_local
+
+stages:
+  - run tests
+
+Run tests:
+  stage: run tests
+  script:
+    - ./gradlew clean test -Dselenide.headless=true
+  after_script:
+    - ./gradlew allureReport
+  artifacts:
+    when: always
+    paths:
+      - build/reports/allure-report/allureReport/*
