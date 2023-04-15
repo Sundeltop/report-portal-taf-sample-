@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+    id "org.sonarqube" version "4.0.0.2929"
+}
+
+group 'com.epam'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+def junit5Version = '5.9.2'
+def selenideVersion = '6.13.0'
+def slf4jVersion = '2.0.7'
+def assertjVersion = '3.24.2'
+def allureSelenideVersion = '2.21.0'
+def restAssuredVersion = '5.3.0'
+def hamcrestVersion = '2.2'
+def lombokVersion = '1.18.26'
+def log4jVersion = '2.20.0'
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junit5Version}"
+    testImplementation "com.codeborne:selenide:${selenideVersion}"
+    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "io.qameta.allure:allure-selenide:${allureSelenideVersion}"
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+    testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+}
+
+test {
+    useJUnitPlatform()
+    systemProperties System.getProperties()
+}
