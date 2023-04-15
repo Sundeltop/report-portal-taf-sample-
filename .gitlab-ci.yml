@@ -5,13 +5,24 @@ default:
     - shell_local
 
 stages:
-  - run tests
+  - tests
+  - allure
 
 Run tests:
-  stage: run tests
+  stage: tests
   script:
     - ./gradlew clean test -D "selenide.headless=true"
-    - ./gradlew allureReport
   artifacts:
+    when: always
+    paths:
+      - build/allure-results
+
+Generate Allure Report:
+  stage: allure
+  script:
+    - ./gradlew allureReport
+    - echo "Allure Report is available - https://${CI_PROJECT_NAMESPACE}.${CI_PAGES_DOMAIN}/-/${CI_PROJECT_NAME}/-/jobs/${CI_JOB_ID}/artifacts/build/reports/allure-report/allureReport/index.html"
+  artifacts:
+    when: always
     paths:
       - build/reports/allure-report/allureReport/*
