@@ -1,0 +1,28 @@
+image: gradle:alpine
+
+default:
+  tags:
+    - shell_local
+
+stages:
+  - tests
+  - allure
+
+Run tests:
+  stage: tests
+  script:
+    - ./gradlew clean test -D "selenide.headless=true"
+  artifacts:
+    when: always
+    paths:
+      - build/allure-results
+
+Generate Allure Report:
+  stage: allure
+  script:
+    - ./gradlew allureReport
+    - echo "Allure Report is available - ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/build/reports/allure-report/allureReport/"
+  artifacts:
+    when: always
+    paths:
+      - build/reports/allure-report/allureReport/*
