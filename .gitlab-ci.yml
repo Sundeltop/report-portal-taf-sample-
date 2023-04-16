@@ -21,7 +21,7 @@ Generate Allure Report:
   stage: allure
   script:
     - ./gradlew allureReport
-    - echo "Allure Report is available - ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/build/reports/allure-report/allureReport/index.html"
+    - echo "Allure Report is available - ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/build/reports/allure-report/allureReport/"
   artifacts:
     when: always
     paths:
