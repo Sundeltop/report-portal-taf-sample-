@@ -1,4 +1,4 @@
-package com.epam.ui.extensions;
+package com.epam;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 @Log4j2
-public class LogExtension implements BeforeEachCallback, AfterEachCallback {
+public class LoggingExtension implements BeforeEachCallback, AfterEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {

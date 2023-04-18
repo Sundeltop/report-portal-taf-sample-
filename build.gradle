@@ -29,7 +29,7 @@ dependencies {
     testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
     testImplementation "io.qameta.allure:allure-selenide:${allureSelenideVersion}"
-    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+    implementation "io.rest-assured:rest-assured:${restAssuredVersion}"
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"

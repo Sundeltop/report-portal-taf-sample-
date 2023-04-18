@@ -1,4 +1,4 @@
-package com.epam.utils;
+package com.epam;
 
 import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.support.hierarchical.ParallelExecutionConfiguration;
