@@ -1,4 +1,4 @@
-package com.epam;
+package com.epam.shared.extensions;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.extension.AfterEachCallback;
