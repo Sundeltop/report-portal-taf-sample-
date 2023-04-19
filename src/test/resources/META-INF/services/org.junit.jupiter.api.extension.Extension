@@ -1,3 +1,1 @@
-com.codeborne.selenide.junit5.ScreenShooterExtension
-com.epam.ui.extensions.EnableAllureExtension
-com.epam.ui.extensions.LogExtension
+com.epam.extensions.shared.LoggingExtension
