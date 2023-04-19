@@ -1,14 +1,16 @@
-package com.epam.shared;
+package com.epam.config;
 
 import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.support.hierarchical.ParallelExecutionConfiguration;
 import org.junit.platform.engine.support.hierarchical.ParallelExecutionConfigurationStrategy;
 
+import static com.epam.config.ConfigurationManager.configuration;
+
 public class ParallelExecutionStrategy implements ParallelExecutionConfiguration, ParallelExecutionConfigurationStrategy {
 
     @Override
     public int getParallelism() {
-        return 5;
+        return configuration().parallelThreads();
     }
 
     @Override
@@ -18,12 +20,12 @@ public class ParallelExecutionStrategy implements ParallelExecutionConfiguration
 
     @Override
     public int getMaxPoolSize() {
-        return 5;
+        return configuration().parallelThreads();
     }
 
     @Override
     public int getCorePoolSize() {
-        return 5;
+        return configuration().parallelThreads();
     }
 
     @Override

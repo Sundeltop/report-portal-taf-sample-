@@ -20,21 +20,23 @@ def restAssuredVersion = '5.3.0'
 def hamcrestVersion = '2.2'
 def lombokVersion = '1.18.26'
 def log4jVersion = '2.20.0'
+def ownerVersion = '1.0.12'
 
 dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${junit5Version}"
-    testImplementation "com.codeborne:selenide:${selenideVersion}"
-    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
-    testImplementation "io.qameta.allure:allure-selenide:${allureSelenideVersion}"
+    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    implementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    implementation "org.junit.jupiter:junit-jupiter-params:${junit5Version}"
+    implementation "com.codeborne:selenide:${selenideVersion}"
+    implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+    implementation "org.assertj:assertj-core:${assertjVersion}"
+    implementation "io.qameta.allure:allure-selenide:${allureSelenideVersion}"
     implementation "io.rest-assured:rest-assured:${restAssuredVersion}"
-    testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    implementation "org.aeonbits.owner:owner-java8:${ownerVersion}"
 }
 
 test {
