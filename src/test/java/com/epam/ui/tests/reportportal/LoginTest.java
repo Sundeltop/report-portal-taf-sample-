@@ -46,6 +46,9 @@ public class LoginTest extends BaseUiTest {
 
         performLogin(firstSession);
         performLogin(secondSession);
+
+        firstSession.close();
+        secondSession.close();
     }
 
     private void performLogin(SelenideDriver driver) {

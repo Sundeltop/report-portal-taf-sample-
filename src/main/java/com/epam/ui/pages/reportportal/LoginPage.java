@@ -3,13 +3,20 @@ package com.epam.ui.pages.reportportal;
 import com.epam.ui.pages.BasePage;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.*;
 import static com.epam.config.ConfigurationManager.configuration;
 
 public class LoginPage extends BasePage {
 
     public LoginPage loginAsDefaultUser() {
         return login(configuration().defaultUserLogin(), configuration().defaultUserPassword());
+    }
+
+    public LaunchesPage openLauchesTab() {
+        $x("//span[text()='Launches']/ancestor::div[@class='sidebarButton__sidebar-nav-btn--1prEO']")
+                .shouldBe(enabled)
+                .click();
+        return page(LaunchesPage.class);
     }
 
     public LoginPage login(String login, String password) {
