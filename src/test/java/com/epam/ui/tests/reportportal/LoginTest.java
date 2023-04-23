@@ -18,7 +18,7 @@ public class LoginTest extends BaseUiTest {
     void checkLoginWithInvalidCredentials() {
         page(LoginPage.class)
                 .login("login", "password")
-                .isLoginNotificationDisplayedWithText("1An error occurred while connecting to server: You do not have enough permissions. Bad credentials");
+                .isLoginNotificationDisplayedWithText("An error occurred while connecting to server: You do not have enough permissions. Bad credentials");
     }
 
     @Test
@@ -48,6 +48,9 @@ public class LoginTest extends BaseUiTest {
 
         performLogin(firstSession);
         performLogin(secondSession);
+
+        firstSession.close();
+        secondSession.close();
     }
 
     private void performLogin(SelenideDriver driver) {

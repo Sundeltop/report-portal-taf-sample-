@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Report Portal UI">
+    <listeners>
+        <listener class-name="com.epam.listeners.shared.LoggingListener"/>
+        <listener class-name="com.epam.listeners.ui.EnableAllureListener"/>
+        <listener class-name="com.codeborne.selenide.testng.ScreenShooter"/>
+    </listeners>
+    <test name="Login Test">
+        <classes>
+            <class name="com.epam.ui.tests.reportportal.LoginTest"/>
+        </classes>
+    </test>
+</suite>
