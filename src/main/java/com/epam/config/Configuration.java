@@ -11,10 +11,6 @@ import static org.aeonbits.owner.Config.LoadType;
 public interface Configuration extends Config {
     @Key("base.url")
     String baseUrl();
-
-    @Key("parallel.threads")
-    Integer parallelThreads();
-
     @Key("default.user.login")
     String defaultUserLogin();
 
