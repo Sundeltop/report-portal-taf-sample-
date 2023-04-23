@@ -4,10 +4,12 @@ import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 import com.epam.ui.pages.reportportal.LoginPage;
 import com.epam.ui.tests.BaseUiTest;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.page;
+import static com.codeborne.selenide.WebDriverRunner.closeWebDriver;
 import static com.epam.config.ConfigurationManager.configuration;
 
 public class LoginTest extends BaseUiTest {
@@ -16,7 +18,7 @@ public class LoginTest extends BaseUiTest {
     void checkLoginWithInvalidCredentials() {
         page(LoginPage.class)
                 .login("login", "password")
-                .isLoginNotificationDisplayedWithText("An error occurred while connecting to server: You do not have enough permissions. Bad credentials");
+                .isLoginNotificationDisplayedWithText("1An error occurred while connecting to server: You do not have enough permissions. Bad credentials");
     }
 
     @Test
@@ -68,5 +70,10 @@ public class LoginTest extends BaseUiTest {
         driver.$(".notificationItem__message-container--16jY2")
                 .shouldBe(visible)
                 .shouldHave(text(expectedNotificationText));
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        closeWebDriver();
     }
 }
