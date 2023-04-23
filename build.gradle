@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-def junit5Version = '5.9.2'
+def testngVersion = '7.7.1'
 def selenideVersion = '6.13.0'
 def slf4jVersion = '2.0.7'
 def assertjVersion = '3.24.2'
@@ -23,9 +23,7 @@ def log4jVersion = '2.20.0'
 def ownerVersion = '1.0.12'
 
 dependencies {
-    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
-    implementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
-    implementation "org.junit.jupiter:junit-jupiter-params:${junit5Version}"
+    implementation "org.testng:testng:${testngVersion}"
     implementation "com.codeborne:selenide:${selenideVersion}"
     implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
     implementation "org.assertj:assertj-core:${assertjVersion}"
@@ -40,6 +38,6 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useTestNG()
     systemProperties System.getProperties()
 }
