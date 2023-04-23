@@ -6,7 +6,7 @@
         <listener class-name="com.epam.listeners.ui.EnableAllureListener"/>
         <listener class-name="com.codeborne.selenide.testng.ScreenShooter"/>
     </listeners>
-    <test name="Login Test">
+    <test name="Login Test" parallel="methods" thread-count="4">
         <classes>
             <class name="com.epam.ui.tests.reportportal.LoginTest"/>
         </classes>
