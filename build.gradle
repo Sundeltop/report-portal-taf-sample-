@@ -12,7 +12,7 @@ repositories {
 }
 
 def junit5Version = '5.9.2'
-def selenideVersion = '6.13.0'
+def selenideVersion = '6.13.1'
 def slf4jVersion = '2.0.7'
 def assertjVersion = '3.24.2'
 def allureSelenideVersion = '2.21.0'
@@ -21,6 +21,7 @@ def hamcrestVersion = '2.2'
 def lombokVersion = '1.18.26'
 def log4jVersion = '2.20.0'
 def ownerVersion = '1.0.12'
+def commonsCodecVersion = '1.15'
 
 dependencies {
     implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
@@ -37,6 +38,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     implementation "org.aeonbits.owner:owner-java8:${ownerVersion}"
+    implementation "commons-codec:commons-codec:${commonsCodecVersion}"
 }
 
 test {
