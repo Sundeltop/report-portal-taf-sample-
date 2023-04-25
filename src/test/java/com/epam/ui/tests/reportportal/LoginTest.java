@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 import com.epam.ui.pages.reportportal.LoginPage;
 import com.epam.ui.tests.BaseUiTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
@@ -33,8 +34,8 @@ public class LoginTest extends BaseUiTest {
                 .isRestoreOptionAvailable();
     }
 
-    //TODO: rewrite in page object style https://github.com/selenide/selenide/issues/2256
     @Test
+    @Disabled("https://github.com/selenide/selenide/issues/2256")
     void checkCanLoginInTwoBrowsers() {
         SelenideConfig selenideConfig = new SelenideConfig();
         SelenideDriver firstSession = new SelenideDriver(selenideConfig);
