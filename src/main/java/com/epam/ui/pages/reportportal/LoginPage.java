@@ -1,12 +1,10 @@
 package com.epam.ui.pages.reportportal;
 
-import com.epam.ui.pages.BasePage;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.epam.config.ConfigurationManager.configuration;
 
-public class LoginPage extends BasePage {
+public class LoginPage {
 
     public LoginPage loginAsDefaultUser() {
         return login(configuration().defaultUserLogin(), configuration().defaultUserPassword());
