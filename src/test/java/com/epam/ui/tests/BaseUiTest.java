@@ -1,6 +1,5 @@
 package com.epam.ui.tests;
 
-import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 import com.codeborne.selenide.junit5.BrowserPerTestStrategyExtension;
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
