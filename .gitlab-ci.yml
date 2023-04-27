@@ -12,7 +12,7 @@ Run tests:
   stage: tests
   allow_failure: true
   script:
-    - ./gradlew clean test -D "selenide.headless=true"
+    - ./gradlew clean test -D "selenide.headless=true" --no-daemon
   artifacts:
     when: always
     paths:
@@ -23,7 +23,6 @@ Generate Allure Report:
   script:
     - ./gradlew allureReport
     - echo "Allure Report is available - ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/build/reports/allure-report/allureReport/"
-    - gradlew.bat --stop
   artifacts:
     when: always
     paths:
