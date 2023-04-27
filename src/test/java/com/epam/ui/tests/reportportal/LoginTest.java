@@ -1,10 +1,15 @@
 package com.epam.ui.tests.reportportal;
 
-import com.codeborne.selenide.SelenideConfig;
-import com.codeborne.selenide.SelenideDriver;
 import com.epam.ui.tests.BaseUiTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class LoginTest extends BaseUiTest {
 
@@ -17,9 +22,7 @@ public class LoginTest extends BaseUiTest {
 
     @Test
     void checkLoginWithValidCredentials() {
-        openPage()
-                .loginAsDefaultUser()
-                .isLoginNotificationDisplayedWithText("Signed in successfully");
+        openPageAndLoginAsDefaultUser();
     }
 
     @Test
@@ -30,19 +33,9 @@ public class LoginTest extends BaseUiTest {
     }
 
     @Test
-    @Disabled("https://github.com/selenide/selenide/issues/2256")
-    void checkCanLoginInTwoBrowsers() {
-        SelenideDriver secondSession = new SelenideDriver(new SelenideConfig());
-        try {
-            openPage()
-                    .loginAsDefaultUser()
-                    .isLoginNotificationDisplayedWithText("Signed in successfully");
-
-            openPage(secondSession)
-                    .loginAsDefaultUser()
-                    .isLoginNotificationDisplayedWithText("Signed in successfully");
-        } finally {
-            secondSession.close();
-        }
+    void checkCanLoginInTwoBrowsersAtTheSameTime() throws ExecutionException, InterruptedException, TimeoutException {
+        CompletableFuture<Void> firstSession = runAsync(this::openPageAndLoginAsDefaultUser, newSingleThreadExecutor());
+        openPageAndLoginAsDefaultUser();
+        firstSession.get(60, SECONDS);
     }
 }

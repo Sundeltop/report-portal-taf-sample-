@@ -9,6 +9,7 @@ import com.epam.ui.pages.reportportal.LoginPage;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.page;
 
 @ExtendWith({
         SelenideConfigurationExtension.class,
@@ -22,7 +23,19 @@ public class BaseUiTest {
         return open("/", LoginPage.class);
     }
 
+    protected <T> T openPage(Class<T> pageObjectClass) {
+        return open("/", pageObjectClass);
+    }
+
     protected LoginPage openPage(SelenideDriver selenideDriver) {
         return selenideDriver.open("/", LoginPage.class);
+    }
+
+    protected LoginPage openPageAndLoginAsDefaultUser() {
+        openPage()
+                .loginAsDefaultUser()
+                .isLoginNotificationDisplayedWithText("Signed in successfully");
+
+        return page(LoginPage.class);
     }
 }

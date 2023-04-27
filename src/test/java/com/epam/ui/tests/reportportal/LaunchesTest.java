@@ -10,8 +10,7 @@ public class LaunchesTest extends BaseUiTest {
     @ValueSource(strings =
             {"TOTAL", "PASSED", "FAILED", "SKIPPED", "PRODUCT BUG", "AUTO BUG", "SYSTEM ISSUE", "TO INVESTIGATE"})
     void checkLaunchesTableContainsExpectedColumn(String column) {
-        openPage()
-                .loginAsDefaultUser()
+        openPageAndLoginAsDefaultUser()
                 .openLauchesTab()
                 .isLaunchesTableContainsColumn(column);
     }
