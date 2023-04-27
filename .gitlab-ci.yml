@@ -12,7 +12,7 @@ Run tests:
   stage: tests
   allow_failure: true
   script:
-    - ./gradlew clean test -D "selenide.headless=true"
+    - ./gradlew clean test -D "selenide.headless=true" –no-daemon
   artifacts:
     when: always
     paths:
