@@ -11,26 +11,23 @@ repositories {
     mavenCentral()
 }
 
-def junit5Version = '5.9.2'
 def selenideVersion = '6.13.1'
 def slf4jVersion = '2.0.7'
 def assertjVersion = '3.24.2'
-def allureSelenideVersion = '2.21.0'
 def restAssuredVersion = '5.3.0'
 def hamcrestVersion = '2.2'
 def lombokVersion = '1.18.26'
 def log4jVersion = '2.20.0'
 def ownerVersion = '1.0.12'
 def commonsCodecVersion = '1.15'
+def cucumberVersion = '7.12.0'
+def gherkinVersion = '26.2.0'
+def allureCucumberVersion = '2.22.0'
 
 dependencies {
-    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
-    implementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
-    implementation "org.junit.jupiter:junit-jupiter-params:${junit5Version}"
     implementation "com.codeborne:selenide:${selenideVersion}"
     implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
     implementation "org.assertj:assertj-core:${assertjVersion}"
-    implementation "io.qameta.allure:allure-selenide:${allureSelenideVersion}"
     implementation "io.rest-assured:rest-assured:${restAssuredVersion}"
     implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -39,6 +36,10 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     implementation "org.aeonbits.owner:owner-java8:${ownerVersion}"
     implementation "commons-codec:commons-codec:${commonsCodecVersion}"
+    implementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+    implementation "io.cucumber:gherkin:${gherkinVersion}"
+    implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
 }
 
 test {
