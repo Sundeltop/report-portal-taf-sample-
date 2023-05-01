@@ -6,18 +6,17 @@ import static com.epam.config.ConfigurationManager.configuration;
 
 public class LoginPage {
 
-    public LoginPage loginAsDefaultUser() {
-        return login(configuration().defaultUserLogin(), configuration().defaultUserPassword());
+    public void loginAsDefaultUser() {
+        login(configuration().defaultUserLogin(), configuration().defaultUserPassword());
     }
 
-    public LaunchesPage openLauchesTab() {
+    public void openLauchesTab() {
         $x("//span[text()='Launches']/ancestor::div[@class='sidebarButton__sidebar-nav-btn--1prEO']")
                 .shouldBe(enabled)
                 .click();
-        return page(LaunchesPage.class);
     }
 
-    public LoginPage login(String login, String password) {
+    public void login(String login, String password) {
         $(".loginForm__login-field--2NeYx input")
                 .setValue(login)
                 .shouldHave(value(login));
@@ -29,8 +28,6 @@ public class LoginPage {
         $(".loginForm__login-button-container--1mHGW")
                 .shouldBe(enabled)
                 .click();
-
-        return this;
     }
 
     public void isLoginNotificationDisplayedWithText(String expectedNotificationText) {
@@ -39,12 +36,10 @@ public class LoginPage {
                 .shouldHave(text(expectedNotificationText));
     }
 
-    public LoginPage forgotPassword() {
+    public void forgotPassword() {
         $(".loginForm__forgot-pass--2mB6-")
                 .shouldBe(enabled)
                 .click();
-
-        return this;
     }
 
     public void isRestoreOptionAvailable() {

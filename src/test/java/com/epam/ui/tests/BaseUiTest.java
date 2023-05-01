@@ -1,24 +1,15 @@
 package com.epam.ui.tests;
 
-public class BaseUiTest {
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-//    protected LoginPage openPage() {
-//        return open("/", LoginPage.class);
-//    }
-//
-//    protected <T> T openPage(Class<T> pageObjectClass) {
-//        return open("/", pageObjectClass);
-//    }
-//
-//    protected LoginPage openPage(SelenideDriver selenideDriver) {
-//        return selenideDriver.open("/", LoginPage.class);
-//    }
-//
-//    protected LoginPage openPageAndLoginAsDefaultUser() {
-//        openPage()
-//                .loginAsDefaultUser()
-//                .isLoginNotificationDisplayedWithText("Signed in successfully");
-//
-//        return page(LoginPage.class);
-//    }
+import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("features")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.epam.stepdefinitions")
+public class BaseUiTest {
 }
