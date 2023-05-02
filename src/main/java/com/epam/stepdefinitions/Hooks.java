@@ -1,13 +1,27 @@
 package com.epam.stepdefinitions;
 
-import io.cucumber.java.After;
+import com.codeborne.selenide.WebDriverRunner;
+import io.cucumber.java.BeforeAll;
+import io.cucumber.java8.En;
+import io.cucumber.java8.Scenario;
+import lombok.extern.log4j.Log4j2;
 
-import static com.codeborne.selenide.WebDriverRunner.closeWebDriver;
+import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.epam.config.ConfigurationManager.configuration;
 
-public class Hooks {
+@Log4j2
+public class Hooks implements En {
 
-    @After
-    public void closeSelenideDriver() {
-        closeWebDriver();
+    public Hooks() {
+        Before((Scenario scenario) ->
+                log.info("Starting Scenario '{}'", scenario.getName()));
+        After((Scenario scenario) ->
+                log.info("Scenario '{}' is finished with status: {}", scenario.getName(), scenario.getStatus()));
+        After(WebDriverRunner::closeWebDriver);
+    }
+
+    @BeforeAll
+    public static void setupSelenide() {
+        baseUrl = configuration().baseUrl();
     }
 }
