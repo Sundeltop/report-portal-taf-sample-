@@ -51,6 +51,12 @@ dependencies {
     testImplementation "org.junit.platform:junit-platform-suite:${junitSuiteVersion}"
 }
 
+allure {
+    useCucumberJVM {
+        version = "${allureCucumberVersion}"
+    }
+}
+
 test {
     useJUnitPlatform()
     systemProperties System.getProperties()
