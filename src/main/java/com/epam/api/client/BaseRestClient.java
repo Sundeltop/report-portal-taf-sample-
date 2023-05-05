@@ -18,7 +18,7 @@ public abstract class BaseRestClient {
                 .build();
     }
 
-    public abstract String getPathToResource();
+    protected abstract String getPathToResource();
 
     public RequestSpecification getRequestSpecification() {
         return requestSpecification;

@@ -19,3 +19,9 @@ Feature: ReportPortal Launches
       | AUTO BUG       |
       | SYSTEM ISSUE   |
       | TO INVESTIGATE |
+
+  Scenario: User can open specific launch details
+    Given Launch "Demo Api Tests" is present on the launches tab
+    When User opens launches tab
+    And User opens this launch
+    Then User is able to see launch details

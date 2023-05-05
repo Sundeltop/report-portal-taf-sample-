@@ -27,6 +27,7 @@ def commonsCodecVersion = '1.15'
 def cucumberVersion = '7.12.0'
 def gherkinVersion = '26.2.0'
 def allureCucumberVersion = '2.22.0'
+def mockitoVersion = '5.3.1'
 
 dependencies {
     implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
@@ -49,6 +50,7 @@ dependencies {
     implementation "io.cucumber:gherkin:${gherkinVersion}"
     implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
     testImplementation "org.junit.platform:junit-platform-suite:${junitSuiteVersion}"
+    implementation "org.mockito:mockito-core:${mockitoVersion}"
 }
 
 allure {
