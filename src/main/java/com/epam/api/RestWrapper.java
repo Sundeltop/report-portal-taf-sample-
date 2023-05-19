@@ -1,0 +1,36 @@
+package com.epam.api;
+
+import com.epam.api.client.LaunchClient;
+
+import static com.epam.config.ConfigurationManager.configuration;
+import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.apache.http.HttpStatus.SC_OK;
+
+public class RestWrapper {
+
+    private final LaunchClient launchClient;
+
+    public RestWrapper() {
+        String accessToken = getAccessToken();
+        launchClient = new LaunchClient(accessToken);
+    }
+
+    private String getAccessToken() {
+        return given()
+                .formParam("grant_type", "password")
+                .formParam("username", configuration().defaultUserLogin())
+                .formParam("password", configuration().defaultUserPassword())
+                .auth()
+                .basic("ui", "uiman")
+                .post(String.format("%s/uat/sso/oauth/token", configuration().baseUrl()))
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .path("access_token");
+    }
+
+    public LaunchClient launchClient() {
+        return launchClient;
+    }
+}

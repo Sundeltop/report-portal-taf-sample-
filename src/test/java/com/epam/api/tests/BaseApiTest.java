@@ -1,5 +1,14 @@
 package com.epam.api.tests;
 
-// just template
+import com.epam.api.RestWrapper;
+import org.junit.jupiter.api.BeforeAll;
+
 public class BaseApiTest {
+
+    protected static RestWrapper api;
+
+    @BeforeAll
+    static void prepareApiClient() {
+        api = new RestWrapper();
+    }
 }
