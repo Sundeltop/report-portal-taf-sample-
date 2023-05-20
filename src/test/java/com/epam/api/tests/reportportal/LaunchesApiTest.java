@@ -1,7 +1,8 @@
 package com.epam.api.tests.reportportal;
 
-import com.epam.api.pojos.LaunchResponse;
+import com.epam.api.pojos.GetLaunchResponse;
 import com.epam.api.tests.BaseApiTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,14 +15,17 @@ public class LaunchesApiTest extends BaseApiTest {
 
     @Test
     void verifyGetAllLaunches() {
-        String launchUUID = api.launchClient().createLaunch(TEST_LAUNCH_NAME);
+        api.launchClient().createLaunch(TEST_LAUNCH_NAME);
 
-        List<LaunchResponse> lauches = api.launchClient().getLaunches();
+        List<GetLaunchResponse> lauches = api.launchClient().getLaunches();
 
         assertThat(lauches)
                 .isNotEmpty()
-                .extracting(LaunchResponse::getName).contains(TEST_LAUNCH_NAME);
+                .extracting(GetLaunchResponse::getName).contains(TEST_LAUNCH_NAME);
+    }
 
-        api.launchClient().deleteLaunch(launchUUID);
+    @AfterEach
+    void clearTestData() {
+        api.launchClient().clearTestData();
     }
 }

@@ -1,17 +1,22 @@
 package com.epam.api.client;
 
 import com.epam.api.pojos.CreateLaunchRequest;
-import com.epam.api.pojos.LaunchResponse;
+import com.epam.api.pojos.CreateLaunchResponse;
+import com.epam.api.pojos.GetLaunchResponse;
 import com.epam.api.pojos.StopLaunchRequest;
 
 import java.util.List;
+import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 import static java.time.Instant.now;
+import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class LaunchClient extends BaseRestClient {
+
+    private CreateLaunchResponse createdLaunch;
 
     public LaunchClient(String accessToken) {
         super(accessToken);
@@ -22,26 +27,27 @@ public class LaunchClient extends BaseRestClient {
         return "/launch";
     }
 
-    public List<LaunchResponse> getLaunches() {
+    public List<GetLaunchResponse> getLaunches() {
         return given().spec(requestSpecification)
                 .get()
                 .then()
                 .statusCode(SC_OK)
                 .extract()
                 .jsonPath()
-                .getList("content", LaunchResponse.class);
+                .getList("content", GetLaunchResponse.class);
     }
 
-    public String createLaunch(String name) {
-        return given().spec(requestSpecification)
+    public CreateLaunchResponse createLaunch(String name) {
+        createdLaunch = given().spec(requestSpecification)
                 .body(createLaunchRequest(name))
                 .post()
                 .then()
                 .statusCode(SC_CREATED)
                 .extract()
-                .path("id");
-    }
+                .as(CreateLaunchResponse.class);
 
+        return createdLaunch;
+    }
 
     public void deleteLaunch(String uuid) {
         Integer id = getLaunchIdByUUID(uuid);
@@ -52,6 +58,8 @@ public class LaunchClient extends BaseRestClient {
                 .delete("/{id}", id)
                 .then()
                 .statusCode(SC_OK);
+
+        createdLaunch = null;
     }
 
     private Integer getLaunchIdByUUID(String uuid) {
@@ -61,6 +69,12 @@ public class LaunchClient extends BaseRestClient {
                 .statusCode(SC_OK)
                 .extract()
                 .path("id");
+    }
+
+    public void clearTestData() {
+        if (nonNull(createdLaunch)) {
+            deleteLaunch(createdLaunch.getUuid());
+        }
     }
 
     private void stopLaunch(Integer id) {
