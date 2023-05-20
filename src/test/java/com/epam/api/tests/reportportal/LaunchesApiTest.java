@@ -10,10 +10,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LaunchesApiTest extends BaseApiTest {
 
+    private static final String TEST_LAUNCH_NAME = "Test Launch";
+
     @Test
-    void verifyLaunches() {
+    void verifyGetAllLaunches() {
+        String launchUUID = api.launchClient().createLaunch(TEST_LAUNCH_NAME);
+
         List<LaunchResponse> lauches = api.launchClient().getLaunches();
-        assertThat(lauches).isNotEmpty();
-        assertThat(lauches).extracting(LaunchResponse::getName).contains("Demo Api Tests");
+
+        assertThat(lauches)
+                .isNotEmpty()
+                .extracting(LaunchResponse::getName).contains(TEST_LAUNCH_NAME);
+
+        api.launchClient().deleteLaunch(launchUUID);
     }
 }
