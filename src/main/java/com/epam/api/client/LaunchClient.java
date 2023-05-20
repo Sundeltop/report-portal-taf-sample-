@@ -6,7 +6,6 @@ import com.epam.api.pojos.GetLaunchResponse;
 import com.epam.api.pojos.StopLaunchRequest;
 
 import java.util.List;
-import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 import static java.time.Instant.now;

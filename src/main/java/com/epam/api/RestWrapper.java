@@ -4,7 +4,6 @@ import com.epam.api.client.LaunchClient;
 
 import static com.epam.config.ConfigurationManager.configuration;
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class RestWrapper {
