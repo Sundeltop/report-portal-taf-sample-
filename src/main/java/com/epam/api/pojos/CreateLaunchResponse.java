@@ -1,5 +1,6 @@
 package com.epam.api.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +14,6 @@ public class CreateLaunchResponse {
     @JsonProperty("id")
     private String uuid;
     private Integer number;
+    @JsonIgnore
+    private Integer id;
 }
