@@ -1,15 +1,22 @@
 package com.epam.api.client;
 
-import com.epam.api.pojos.*;
+import com.epam.api.pojos.CreateLaunchRequest;
+import com.epam.api.pojos.CreateLaunchResponse;
+import com.epam.api.pojos.GetLaunchResponse;
+import com.epam.api.pojos.StopLaunchRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.SneakyThrows;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
+import static java.net.http.HttpResponse.BodyHandlers.ofString;
 import static java.time.Instant.now;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LaunchClient extends BaseRestClient {
 
@@ -24,14 +31,15 @@ public class LaunchClient extends BaseRestClient {
         return "/launch";
     }
 
+    @SneakyThrows
     public CreateLaunchResponse createLaunch(String name) {
-        createdLaunch = given().spec(requestSpecification)
-                .body(createLaunchRequest(name))
-                .post()
-                .then()
-                .statusCode(SC_CREATED)
-                .extract()
-                .as(CreateLaunchResponse.class);
+        String jsonBody = mapper.writeValueAsString(createLaunchRequest(name));
+
+        HttpResponse<String> response = client.send(POST(jsonBody), ofString());
+
+        assertThat(response.statusCode()).isEqualTo(SC_CREATED);
+
+        createdLaunch = mapper.readValue(response.body(), CreateLaunchResponse.class);
 
         Integer launchId = getLaunchIdByUUID(createdLaunch.getUuid());
         stopLaunch(launchId); // cancel processing
@@ -40,106 +48,52 @@ public class LaunchClient extends BaseRestClient {
         return createdLaunch;
     }
 
-    public void analyzeLaunch(Integer id, Integer expectedStatusCode) {
-        AnalyzeLaunchRequest analyzeLaunchRequest = AnalyzeLaunchRequest.builder()
-                .analyzeItemsMode(singletonList("TO_INVESTIGATE"))
-                .analyzerMode("ALL")
-                .analyzerTypeName("autoAnalyzer")
-                .launchId(id)
-                .build();
-
-        given().spec(requestSpecification)
-                .body(analyzeLaunchRequest)
-                .post("/analyze")
-                .then()
-                .statusCode(expectedStatusCode);
-    }
-
+    @SneakyThrows
     public List<GetLaunchResponse> getLaunches() {
-        return given().spec(requestSpecification)
-                .get()
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .jsonPath()
-                .getList("content", GetLaunchResponse.class);
+        HttpResponse<String> response = client.send(GET(), ofString());
+
+        assertThat(response.statusCode()).isEqualTo(SC_OK);
+
+        return mapper.readValue(
+                mapper.readTree(response.body()).path("content").toString(), new TypeReference<>() {
+                }
+        );
     }
 
-    public GetLaunchResponse getLaunchById(Integer id, Integer expectedStatusCode) {
-        return given().spec(requestSpecification)
-                .get("/{id}", id)
-                .then()
-                .statusCode(expectedStatusCode)
-                .extract()
-                .as(GetLaunchResponse.class);
-    }
-
-    public GetLaunchResponse getLaunchById(Integer id) {
-        return getLaunchById(id, SC_OK);
-    }
-
-    public void deleteLaunchById(Integer id, Integer expectedStatusCode) {
-        given().spec(requestSpecification)
-                .delete("/{id}", id)
-                .then()
-                .statusCode(expectedStatusCode);
-
-        createdLaunch = null;
-    }
-
-    public void deleteLaunchById(Integer id) {
-        deleteLaunchById(id, SC_OK);
-    }
-
-    public void stopLaunch(Integer id, Integer expectedStatusCode) {
+    @SneakyThrows
+    public void stopLaunch(Integer id) {
         StopLaunchRequest stopLaunchRequest = StopLaunchRequest.builder()
                 .endTime(now().toString())
                 .build();
 
-        given().spec(requestSpecification)
-                .body(stopLaunchRequest)
-                .put("/{id}/stop", id)
-                .then()
-                .statusCode(expectedStatusCode);
+        String jsonBody = mapper.writeValueAsString(stopLaunchRequest);
+
+        HttpResponse<String> response = client.send(PUT(jsonBody, String.format("/%d/stop", id)), ofString());
+
+        assertThat(response.statusCode()).isEqualTo(SC_OK);
     }
 
-    public void stopLaunch(Integer id) {
-        stopLaunch(id, SC_OK);
+    @SneakyThrows
+    public void deleteLaunchById(Integer id) {
+        HttpResponse<String> response = client.send(DELETE(String.format("/%d", id)), ofString());
+
+        assertThat(response.statusCode()).isEqualTo(SC_OK);
+        createdLaunch = null;
     }
 
-    public void updateLaunchById(Integer id, String description, Integer expectedStatusCode) {
-        CreateLaunchRequest updateLaunchRequest = CreateLaunchRequest.builder()
-                .description(description)
-                .build();
-
-        given().spec(requestSpecification)
-                .body(updateLaunchRequest)
-                .put("/{id}/update", id)
-                .then()
-                .statusCode(expectedStatusCode);
-    }
-
-    public Integer prepareNonExistingLaunch() {
-        Integer id = createLaunch("Test Launch").getId();
-
-        deleteLaunchById(id);
-
-        return id;
-    }
-
+    @SneakyThrows
     public void clearTestData() {
         if (nonNull(createdLaunch)) {
             deleteLaunchById(createdLaunch.getId());
         }
     }
 
-    private Integer getLaunchIdByUUID(String uuid) {
-        return given().spec(requestSpecification)
-                .get("/uuid/{uuid}", uuid)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .path("id");
+    private Integer getLaunchIdByUUID(String uuid) throws IOException, InterruptedException {
+        HttpResponse<String> response = client.send(GET(String.format("/uuid/%s", uuid)), ofString());
+
+        assertThat(response.statusCode()).isEqualTo(SC_OK);
+
+        return mapper.readTree(response.body()).path("id").asInt();
     }
 
     private CreateLaunchRequest createLaunchRequest(String name) {
