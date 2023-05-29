@@ -1,5 +1,6 @@
 package com.epam.api.tests.reportportal;
 
+import com.epam.api.RestResponse;
 import com.epam.api.pojos.GetLaunchResponse;
 import com.epam.api.tests.BaseApiTest;
 import org.junit.jupiter.api.AfterEach;
@@ -7,12 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LaunchesApiTest extends BaseApiTest {
 
-    private static final String TEST_LAUNCH_NAME = "Test Launch";
+    private static final String TEST_LAUNCH_NAME = "Test Launch %s".formatted(randomUUID());
 
     // GET
 
@@ -20,9 +22,11 @@ public class LaunchesApiTest extends BaseApiTest {
     void verifyGetAllLaunches() {
         api.launchClient().createLaunch(TEST_LAUNCH_NAME);
 
-        List<GetLaunchResponse> lauches = api.launchClient().getLaunches();
+        RestResponse<List<GetLaunchResponse>> response = api.launchClient().getLaunches();
 
-        assertThat(lauches)
+        response.validate().statusCode(SC_OK);
+
+        assertThat(response.extract())
                 .isNotEmpty()
                 .extracting(GetLaunchResponse::getName).contains(TEST_LAUNCH_NAME);
     }
@@ -31,23 +35,23 @@ public class LaunchesApiTest extends BaseApiTest {
     void verifyGetNonExistingLaunchById() {
         Integer id = api.launchClient().prepareNonExistingLaunch();
 
-        api.launchClient().getLaunchById(id, SC_NOT_FOUND);
+        api.launchClient().getLaunchById(id).validate().statusCode(SC_NOT_FOUND);
     }
 
     // POST
 
     @Test
-    void verifyAnalyzeLaunch() {
+    void verifyStartLaunchAutoAnalyzer() {
         Integer id = api.launchClient().createLaunch(TEST_LAUNCH_NAME).getId();
 
-        api.launchClient().analyzeLaunch(id, SC_OK);
+        api.launchClient().startLaunchAutoAnalyzer(id).validate().statusCode(SC_OK);
     }
 
     @Test
-    void verifyAnalyzeNonExistingLaunch() {
+    void verifyStartLaunchAutoAnalyzerOfNonExistingLaunch() {
         Integer id = api.launchClient().prepareNonExistingLaunch();
 
-        api.launchClient().analyzeLaunch(id, SC_NOT_FOUND);
+        api.launchClient().startLaunchAutoAnalyzer(id).validate().statusCode(SC_NOT_FOUND);
     }
 
     // PUT
@@ -57,9 +61,13 @@ public class LaunchesApiTest extends BaseApiTest {
         Integer id = api.launchClient().createLaunch(TEST_LAUNCH_NAME).getId();
         String updatedLaunchDescription = "Demo launch updated by autotest";
 
-        api.launchClient().updateLaunchById(id, updatedLaunchDescription, SC_OK);
+        api.launchClient().updateLaunchById(id, updatedLaunchDescription).validate().statusCode(SC_OK);
 
-        assertThat(api.launchClient().getLaunchById(id))
+        RestResponse<GetLaunchResponse> response = api.launchClient().getLaunchById(id);
+
+        response.validate().statusCode(SC_OK);
+
+        assertThat(response.extract())
                 .extracting(GetLaunchResponse::getDescription).isEqualTo(updatedLaunchDescription);
     }
 
@@ -67,7 +75,7 @@ public class LaunchesApiTest extends BaseApiTest {
     void verifyStopAlreadyStoppedLaunch() {
         Integer id = api.launchClient().createLaunch(TEST_LAUNCH_NAME).getId();
 
-        api.launchClient().stopLaunch(id, SC_NOT_ACCEPTABLE);
+        api.launchClient().stopLaunch(id).validate().statusCode(SC_NOT_ACCEPTABLE);
     }
 
     @Test
@@ -75,7 +83,7 @@ public class LaunchesApiTest extends BaseApiTest {
         Integer id = api.launchClient().prepareNonExistingLaunch();
         String updatedLaunchDescription = "Demo launch updated by autotest";
 
-        api.launchClient().updateLaunchById(id, updatedLaunchDescription, SC_NOT_FOUND);
+        api.launchClient().updateLaunchById(id, updatedLaunchDescription).validate().statusCode(SC_NOT_FOUND);
     }
 
     // DELETE
@@ -83,16 +91,18 @@ public class LaunchesApiTest extends BaseApiTest {
     @Test
     void verifyDeleteLaunchById() {
         Integer id = api.launchClient().createLaunch(TEST_LAUNCH_NAME).getId();
+        api.launchClient().getLaunchById(id).validate().statusCode(SC_OK);
 
-        api.launchClient().deleteLaunchById(id, SC_OK);
-        api.launchClient().getLaunchById(id, SC_NOT_FOUND);
+        api.launchClient().deleteLaunchById(id).validate().statusCode(SC_OK);
+
+        api.launchClient().getLaunchById(id).validate().statusCode(SC_NOT_FOUND);
     }
 
     @Test
     void verifyDeleteNonExistingLaunchById() {
         Integer id = api.launchClient().prepareNonExistingLaunch();
 
-        api.launchClient().deleteLaunchById(id, SC_NOT_FOUND);
+        api.launchClient().deleteLaunchById(id).validate().statusCode(SC_NOT_FOUND);
     }
 
     @AfterEach

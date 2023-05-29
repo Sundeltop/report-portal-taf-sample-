@@ -1,5 +1,6 @@
 package com.epam.api.client;
 
+import com.epam.api.RestResponse;
 import com.epam.api.pojos.*;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import static io.restassured.RestAssured.given;
 import static java.time.Instant.now;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
+import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -25,22 +27,22 @@ public class LaunchClient extends BaseRestClient {
     }
 
     public CreateLaunchResponse createLaunch(String name) {
-        createdLaunch = given().spec(requestSpecification)
-                .body(createLaunchRequest(name))
-                .post()
-                .then()
-                .statusCode(SC_CREATED)
-                .extract()
-                .as(CreateLaunchResponse.class);
+        RestResponse<CreateLaunchResponse> response = new RestResponse<>(
+                given().spec(requestSpecification).body(createLaunchRequest(name)).post(),
+                r -> r.as(CreateLaunchResponse.class)
+        );
+        response.validate().statusCode(SC_CREATED);
 
-        Integer launchId = getLaunchIdByUUID(createdLaunch.getUuid());
+        createdLaunch = response.extract();
+
+        Integer launchId = getLaunchIdByUUID(createdLaunch.getUuid()).extract();
         stopLaunch(launchId); // cancel processing
         createdLaunch.setId(launchId);
 
         return createdLaunch;
     }
 
-    public void analyzeLaunch(Integer id, Integer expectedStatusCode) {
+    public RestResponse<Void> startLaunchAutoAnalyzer(Integer id) {
         AnalyzeLaunchRequest analyzeLaunchRequest = AnalyzeLaunchRequest.builder()
                 .analyzeItemsMode(singletonList("TO_INVESTIGATE"))
                 .analyzerMode("ALL")
@@ -48,98 +50,78 @@ public class LaunchClient extends BaseRestClient {
                 .launchId(id)
                 .build();
 
-        given().spec(requestSpecification)
-                .body(analyzeLaunchRequest)
-                .post("/analyze")
-                .then()
-                .statusCode(expectedStatusCode);
+        return new RestResponse<>(
+                given().spec(requestSpecification).body(analyzeLaunchRequest).post("/analyze"),
+                null
+        );
     }
 
-    public List<GetLaunchResponse> getLaunches() {
-        return given().spec(requestSpecification)
-                .get()
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .jsonPath()
-                .getList("content", GetLaunchResponse.class);
+    public RestResponse<List<GetLaunchResponse>> getLaunches() {
+        return new RestResponse<>(
+                given().spec(requestSpecification).get(),
+                response -> response.jsonPath().getList("content", GetLaunchResponse.class)
+        );
     }
 
-    public GetLaunchResponse getLaunchById(Integer id, Integer expectedStatusCode) {
-        return given().spec(requestSpecification)
-                .get("/{id}", id)
-                .then()
-                .statusCode(expectedStatusCode)
-                .extract()
-                .as(GetLaunchResponse.class);
+    public RestResponse<GetLaunchResponse> getLaunchById(Integer id) {
+        return new RestResponse<>(
+                given().spec(requestSpecification).get("/{id}", id),
+                response -> response.as(GetLaunchResponse.class)
+        );
     }
 
-    public GetLaunchResponse getLaunchById(Integer id) {
-        return getLaunchById(id, SC_OK);
+    public RestResponse<Integer> getLaunchIdByUUID(String uuid) {
+        return new RestResponse<>(
+                given().spec(requestSpecification).get("/uuid/{uuid}", uuid),
+                r -> r.path("id")
+        );
     }
 
-    public void deleteLaunchById(Integer id, Integer expectedStatusCode) {
-        given().spec(requestSpecification)
-                .delete("/{id}", id)
-                .then()
-                .statusCode(expectedStatusCode);
+    public RestResponse<Void> deleteLaunchById(Integer id) {
+        RestResponse<Void> response = new RestResponse<>(
+                given().spec(requestSpecification).delete("/{id}", id),
+                null
+        );
 
         createdLaunch = null;
+
+        return response;
     }
 
-    public void deleteLaunchById(Integer id) {
-        deleteLaunchById(id, SC_OK);
-    }
-
-    public void stopLaunch(Integer id, Integer expectedStatusCode) {
+    public RestResponse<Void> stopLaunch(Integer id) {
         StopLaunchRequest stopLaunchRequest = StopLaunchRequest.builder()
                 .endTime(now().toString())
                 .build();
 
-        given().spec(requestSpecification)
-                .body(stopLaunchRequest)
-                .put("/{id}/stop", id)
-                .then()
-                .statusCode(expectedStatusCode);
+        return new RestResponse<>(
+                given().spec(requestSpecification).body(stopLaunchRequest).put("/{id}/stop", id),
+                null
+        );
     }
 
-    public void stopLaunch(Integer id) {
-        stopLaunch(id, SC_OK);
-    }
-
-    public void updateLaunchById(Integer id, String description, Integer expectedStatusCode) {
+    public RestResponse<Void> updateLaunchById(Integer id, String description) {
         CreateLaunchRequest updateLaunchRequest = CreateLaunchRequest.builder()
                 .description(description)
                 .build();
 
-        given().spec(requestSpecification)
-                .body(updateLaunchRequest)
-                .put("/{id}/update", id)
-                .then()
-                .statusCode(expectedStatusCode);
+        return new RestResponse<>(
+                given().spec(requestSpecification).body(updateLaunchRequest).put("/{id}/update", id),
+                null
+        );
     }
 
     public Integer prepareNonExistingLaunch() {
-        Integer id = createLaunch("Test Launch").getId();
+        Integer id = createLaunch("Test Launch %s".formatted(randomUUID())).getId();
 
-        deleteLaunchById(id);
+        deleteLaunchById(id).validate().statusCode(SC_OK);
 
         return id;
     }
 
     public void clearTestData() {
         if (nonNull(createdLaunch)) {
-            deleteLaunchById(createdLaunch.getId());
+            deleteLaunchById(createdLaunch.getId()).validate().statusCode(SC_OK);
         }
-    }
-
-    private Integer getLaunchIdByUUID(String uuid) {
-        return given().spec(requestSpecification)
-                .get("/uuid/{uuid}", uuid)
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .path("id");
     }
 
     private CreateLaunchRequest createLaunchRequest(String name) {
