@@ -20,4 +20,7 @@ public interface Configuration extends Config {
 
     @Key("default.user.password")
     String defaultUserPassword();
+
+    @Key("explicit.timeout.seconds")
+    Integer explicitTimeout();
 }

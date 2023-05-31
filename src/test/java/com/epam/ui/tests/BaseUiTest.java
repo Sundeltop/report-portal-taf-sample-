@@ -1,41 +1,27 @@
 package com.epam.ui.tests;
 
-import com.codeborne.selenide.SelenideDriver;
-import com.codeborne.selenide.junit5.BrowserPerTestStrategyExtension;
-import com.codeborne.selenide.junit5.ScreenShooterExtension;
-import com.codeborne.selenide.junit5.TextReportExtension;
-import com.epam.extensions.ui.SelenideConfigurationExtension;
+import com.epam.extensions.ui.WebDriverConfigurationExtension;
 import com.epam.ui.pages.reportportal.LoginPage;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.page;
+import static com.epam.config.ConfigurationManager.configuration;
+import static com.epam.ui.WebDriverStorage.getWebDriver;
 
-@ExtendWith({
-        SelenideConfigurationExtension.class,
-        ScreenShooterExtension.class,
-        BrowserPerTestStrategyExtension.class,
-        TextReportExtension.class
-})
+@ExtendWith(WebDriverConfigurationExtension.class)
 public class BaseUiTest {
 
     protected LoginPage openPage() {
-        return open("/", LoginPage.class);
-    }
-
-    protected <T> T openPage(Class<T> pageObjectClass) {
-        return open("/", pageObjectClass);
-    }
-
-    protected LoginPage openPage(SelenideDriver selenideDriver) {
-        return selenideDriver.open("/", LoginPage.class);
+        getWebDriver().get(configuration().baseUrl());
+        return new LoginPage();
     }
 
     protected LoginPage openPageAndLoginAsDefaultUser() {
-        openPage()
+        LoginPage loginPage = openPage();
+
+        loginPage
                 .loginAsDefaultUser()
                 .isLoginNotificationDisplayedWithText("Signed in successfully");
 
-        return page(LoginPage.class);
+        return loginPage;
     }
 }

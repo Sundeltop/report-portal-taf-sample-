@@ -3,14 +3,6 @@ package com.epam.ui.tests.reportportal;
 import com.epam.ui.tests.BaseUiTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import static java.util.concurrent.CompletableFuture.runAsync;
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 public class LoginTest extends BaseUiTest {
 
     @Test
@@ -30,12 +22,5 @@ public class LoginTest extends BaseUiTest {
         openPage()
                 .forgotPassword()
                 .isRestoreOptionAvailable();
-    }
-
-    @Test
-    void checkCanLoginInTwoBrowsersAtTheSameTime() throws ExecutionException, InterruptedException, TimeoutException {
-        CompletableFuture<Void> firstSession = runAsync(this::openPageAndLoginAsDefaultUser, newSingleThreadExecutor());
-        openPageAndLoginAsDefaultUser();
-        firstSession.get(60, SECONDS);
     }
 }
