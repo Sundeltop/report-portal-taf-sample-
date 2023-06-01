@@ -20,7 +20,7 @@ public class LoginPage {
     @FindBy(css = ".loginForm__password-field--2IH1A input")
     private WebElement passwordInput;
 
-    @FindBy(css = ".loginForm__login-button-container--1mHGW")
+    @FindBy(css = ".loginForm__login-button-container--1mHGW button")
     private WebElement confirmLoginButton;
 
     @FindBy(css = ".notificationItem__message-container--16jY2")
@@ -35,6 +35,9 @@ public class LoginPage {
     @FindBy(xpath = "//span[text()='Launches']/ancestor::div[@class='sidebarButton__sidebar-nav-btn--1prEO']")
     private WebElement launchesTab;
 
+    @FindBy(xpath = "//span[text()='Dashboards']/ancestor::div[@class='sidebarButton__sidebar-nav-btn--1prEO']")
+    private WebElement dashboardsTab;
+
     public LoginPage() {
         initElements(getWebDriver(), this);
     }
@@ -47,6 +50,12 @@ public class LoginPage {
         waitFor(elementToBeClickable(launchesTab)).click();
 
         return new LaunchesPage();
+    }
+
+    public DashboardsPage openDashboardsTab() {
+        waitFor(elementToBeClickable(dashboardsTab)).click();
+
+        return new DashboardsPage();
     }
 
     public LoginPage login(String login, String password) {

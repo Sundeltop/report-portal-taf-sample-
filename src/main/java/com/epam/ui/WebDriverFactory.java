@@ -3,8 +3,8 @@ package com.epam.ui;
 import com.epam.extensions.ui.BrowserFactory;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
@@ -16,25 +16,25 @@ public class WebDriverFactory {
     }
 
     public static WebDriver createDriverInstance(String browser) {
+        browser = browser == null ? "chrome" : browser;
+        BrowserFactory browserFactory = BrowserFactory.valueOf(browser.toUpperCase());
+
         if ("remote".equals(System.getProperty("target"))) {
-            return createRemoteDriverInstance();
+            return createRemoteDriverInstance(browserFactory.getDriverOptions());
         } else {
-            if (browser == null) {
-                browser = "chrome";
-            }
-            return BrowserFactory.valueOf(browser.toUpperCase()).createDriver();
+            return browserFactory.createDriver();
         }
     }
 
     @SneakyThrows
-    private static WebDriver createRemoteDriverInstance() {
-        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getSelenoidCapabilities());
+    private static WebDriver createRemoteDriverInstance(MutableCapabilities capabilities) {
+        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getSelenoidCapabilities(capabilities));
     }
 
-    private static Capabilities getSelenoidCapabilities() {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+    private static Capabilities getSelenoidCapabilities(MutableCapabilities capabilities) {
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", true);
+
         return capabilities;
     }
 }
