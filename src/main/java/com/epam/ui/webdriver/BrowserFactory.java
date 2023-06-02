@@ -3,6 +3,7 @@ package com.epam.ui.webdriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,7 +11,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.AbstractDriverOptions;
 
 public enum BrowserFactory {
 
@@ -45,13 +45,13 @@ public enum BrowserFactory {
         this.driverClass = driverClass;
     }
 
-    public abstract AbstractDriverOptions<?> getDriverOptions();
+    public abstract MutableCapabilities getDriverOptions();
 
     @SneakyThrows
     public WebDriver createDriver() {
-        WebDriverManager.getInstance(driverClass).setup();
-
-        WebDriver driver = driverClass.getDeclaredConstructor().newInstance();
+        WebDriver driver = WebDriverManager.getInstance(driverClass)
+                .capabilities(getDriverOptions())
+                .create();
         driver.manage().window().setSize(new Dimension(1366, 768));
 
         return driver;

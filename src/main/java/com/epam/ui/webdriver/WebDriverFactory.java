@@ -19,18 +19,18 @@ public class WebDriverFactory {
         BrowserFactory browserFactory = BrowserFactory.valueOf(browser.toUpperCase());
 
         if ("remote".equals(System.getProperty("target"))) {
-            return createRemoteDriverInstance(browserFactory.getDriverOptions());
+            return createRemoteDriver(browserFactory.getDriverOptions());
         } else {
             return browserFactory.createDriver();
         }
     }
 
     @SneakyThrows
-    private static WebDriver createRemoteDriverInstance(MutableCapabilities capabilities) {
-        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getSelenoidCapabilities(capabilities));
+    private static WebDriver createRemoteDriver(MutableCapabilities capabilities) {
+        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), addSelenoidCapabilities(capabilities));
     }
 
-    private static Capabilities getSelenoidCapabilities(MutableCapabilities capabilities) {
+    private static Capabilities addSelenoidCapabilities(MutableCapabilities capabilities) {
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", true);
 
