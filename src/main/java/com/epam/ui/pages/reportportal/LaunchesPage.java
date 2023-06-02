@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 import static com.epam.ui.utils.WebDriverUtils.isScrolledIntoView;
 import static com.epam.ui.utils.WebDriverUtils.scrollIntoView;
 import static org.assertj.core.api.Assertions.assertThat;

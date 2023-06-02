@@ -1,4 +1,4 @@
-package com.epam.extensions.ui;
+package com.epam.ui.webdriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;

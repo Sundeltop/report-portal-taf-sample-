@@ -3,8 +3,9 @@ package com.epam.ui.pages.reportportal;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 import static com.epam.ui.utils.WebDriverUtils.resize;
+import static java.lang.Double.parseDouble;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 public class WidgetsPage {
@@ -25,6 +26,6 @@ public class WidgetsPage {
     }
 
     public Double getWidgetWidth() {
-        return Double.parseDouble(firstWidget.getAttribute("width"));
+        return parseDouble(firstWidget.getAttribute("width"));
     }
 }

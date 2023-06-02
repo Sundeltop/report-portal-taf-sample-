@@ -6,7 +6,7 @@ import com.epam.ui.pages.reportportal.LoginPage;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.epam.config.ConfigurationManager.configuration;
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 
 @ExtendWith({
         WebDriverConfigurationExtension.class,

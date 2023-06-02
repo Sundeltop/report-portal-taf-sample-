@@ -8,7 +8,7 @@ import org.openqa.selenium.TakesScreenshot;
 import java.io.File;
 import java.io.IOException;
 
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.FILE;
 

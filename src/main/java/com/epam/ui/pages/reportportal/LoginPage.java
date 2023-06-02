@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static com.epam.config.ConfigurationManager.configuration;
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 import static com.epam.ui.utils.WaitUtils.waitFor;
 import static com.epam.ui.utils.WaitUtils.waitForTextToBePresentInElement;
 import static org.assertj.core.api.Assertions.assertThat;

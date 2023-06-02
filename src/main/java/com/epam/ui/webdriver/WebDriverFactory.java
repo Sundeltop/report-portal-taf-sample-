@@ -1,6 +1,5 @@
-package com.epam.ui;
+package com.epam.ui.webdriver;
 
-import com.epam.extensions.ui.BrowserFactory;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;

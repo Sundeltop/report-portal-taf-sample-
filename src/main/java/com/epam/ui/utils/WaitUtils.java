@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.function.Function;
 
 import static com.epam.config.ConfigurationManager.configuration;
-import static com.epam.ui.WebDriverStorage.getWebDriver;
+import static com.epam.ui.webdriver.WebDriverStorage.getWebDriver;
 import static java.time.Duration.ofSeconds;
 
 public class WaitUtils {
