@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public class WebDriverFactory {
 
@@ -31,8 +34,11 @@ public class WebDriverFactory {
     }
 
     private static Capabilities addSelenoidCapabilities(MutableCapabilities capabilities) {
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", true);
+        Map<String, Object> selenoidCapabilities = Map.ofEntries(
+                entry("enableVNC", true),
+                entry("enableVideo", true)
+        );
+        capabilities.setCapability("selenoid:options", selenoidCapabilities);
 
         return capabilities;
     }

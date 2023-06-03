@@ -2,7 +2,6 @@ package com.epam.ui.webdriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -49,12 +48,8 @@ public enum BrowserFactory {
 
     @SneakyThrows
     public WebDriver createDriver() {
-        WebDriver driver = WebDriverManager.getInstance(driverClass)
+        return WebDriverManager.getInstance(driverClass)
                 .capabilities(getDriverOptions())
                 .create();
-        driver.manage().window().setSize(new Dimension(1366, 768));
-
-        return driver;
     }
-
 }
