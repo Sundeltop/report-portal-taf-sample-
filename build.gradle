@@ -46,4 +46,5 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperties System.getProperties()
+    systemProperty "target", "remote"
 }
