@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -18,7 +19,11 @@ public class WebDriverFactory {
     }
 
     public static WebDriver createDriverInstance(String browser) {
-        browser = browser == null ? "chrome" : browser;
+        boolean isBrowserSupported = Arrays.stream(BrowserFactory.values())
+                .anyMatch(value -> value.name().equalsIgnoreCase(browser));
+        if (!isBrowserSupported) {
+            throw new IllegalArgumentException("%s browser is not supported".formatted(browser));
+        }
         BrowserFactory browserFactory = BrowserFactory.valueOf(browser.toUpperCase());
 
         if ("remote".equals(System.getProperty("target"))) {

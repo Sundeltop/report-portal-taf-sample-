@@ -17,7 +17,7 @@ public class ScreenshotExtension implements AfterTestExecutionCallback {
 
     @Override
     public void afterTestExecution(ExtensionContext extensionContext) {
-        if (extensionContext.getExecutionException().isPresent()) {
+        if (extensionContext.getExecutionException().isPresent() && getWebDriver() != null) {
             captureScreenshot(extensionContext.getRequiredTestMethod().getName());
         }
     }

@@ -14,7 +14,7 @@ public class WebDriverConfigurationExtension implements BeforeEachCallback, Afte
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        setWebDriver(createDriverInstance(System.getProperty("browser")));
+        setWebDriver(createDriverInstance(System.getProperty("browser", "chrome")));
         log.info("Create WebDriver instance");
     }
 

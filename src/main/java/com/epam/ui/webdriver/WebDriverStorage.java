@@ -31,7 +31,7 @@ public class WebDriverStorage {
     }
 
     public static void closeBrowser() {
-        if (getWebDriver() != null) {
+        if (driverInstance.get() != null) {
             getWebDriver().quit();
             driverInstance.set(null);
         }
