@@ -31,6 +31,7 @@ public class WebDriverUtils {
     }
 
     public static void resize(WebElement element, Integer xOffset, Integer yOffset) {
+        scrollIntoView(element);
         getActions()
                 .clickAndHold(element)
                 .moveByOffset(xOffset, yOffset)

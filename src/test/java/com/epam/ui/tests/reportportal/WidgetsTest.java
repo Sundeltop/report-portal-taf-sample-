@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WidgetsTest extends BaseUiTest {
 
     private static final Integer NEGATIVE_OFFSET = -100;
-    private static final Integer POSITIVE_OFFSET = 100;
     private static final Integer DEFAULT_OFFSET = 0;
 
     @Test
@@ -20,12 +19,14 @@ public class WidgetsTest extends BaseUiTest {
 
         Double previousWidgetWidth = widgetsPage.getWidgetWidth();
 
-        Double widgetWidthAfterResize = widgetsPage
-                .resizeWidget(NEGATIVE_OFFSET, DEFAULT_OFFSET)
-                .getWidgetWidth();
+        try {
+            Double widgetWidthAfterResize = widgetsPage
+                    .resizeWidget(NEGATIVE_OFFSET, DEFAULT_OFFSET)
+                    .getWidgetWidth();
 
-        assertThat(widgetWidthAfterResize).isLessThan(previousWidgetWidth);
-
-        widgetsPage.resizeWidget(POSITIVE_OFFSET, DEFAULT_OFFSET); // cleanup
+            assertThat(widgetWidthAfterResize).isLessThan(previousWidgetWidth);
+        } finally {
+            api.dashboardClient().resetWidgetToDefaults();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.epam.api;
 
+import com.epam.api.client.DashboardClient;
 import com.epam.api.client.LaunchClient;
 
 import static com.epam.config.ConfigurationManager.configuration;
@@ -9,10 +10,12 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class RestWrapper {
 
     private final LaunchClient launchClient;
+    private final DashboardClient dashboardClient;
 
     public RestWrapper() {
         String accessToken = getAccessToken();
         launchClient = new LaunchClient(accessToken);
+        dashboardClient = new DashboardClient(accessToken);
     }
 
     private String getAccessToken() {
@@ -31,5 +34,9 @@ public class RestWrapper {
 
     public LaunchClient launchClient() {
         return launchClient;
+    }
+
+    public DashboardClient dashboardClient() {
+        return dashboardClient;
     }
 }
