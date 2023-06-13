@@ -4,6 +4,7 @@ import com.epam.api.client.DashboardClient;
 import com.epam.api.client.LaunchClient;
 
 import static com.epam.config.ConfigurationManager.configuration;
+import static io.restassured.RestAssured.filters;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -13,6 +14,7 @@ public class RestWrapper {
     private final DashboardClient dashboardClient;
 
     public RestWrapper() {
+        filters(new RestAssuredLoggingFilter());
         String accessToken = getAccessToken();
         launchClient = new LaunchClient(accessToken);
         dashboardClient = new DashboardClient(accessToken);

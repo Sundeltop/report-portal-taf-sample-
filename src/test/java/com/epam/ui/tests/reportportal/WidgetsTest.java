@@ -1,5 +1,6 @@
 package com.epam.ui.tests.reportportal;
 
+import com.epam.ui.annotations.WidgetCleanup;
 import com.epam.ui.pages.reportportal.WidgetsPage;
 import com.epam.ui.tests.BaseUiTest;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ public class WidgetsTest extends BaseUiTest {
     private static final Integer DEFAULT_OFFSET = 0;
 
     @Test
+    @WidgetCleanup
     void checkWidgetWidthIsChangedAfterResize() {
         WidgetsPage widgetsPage = openPageAndLoginAsDefaultUser()
                 .openDashboardsTab()
@@ -19,14 +21,10 @@ public class WidgetsTest extends BaseUiTest {
 
         Double previousWidgetWidth = widgetsPage.getWidgetWidth();
 
-        try {
-            Double widgetWidthAfterResize = widgetsPage
-                    .resizeWidget(NEGATIVE_OFFSET, DEFAULT_OFFSET)
-                    .getWidgetWidth();
+        Double widgetWidthAfterResize = widgetsPage
+                .resizeWidget(NEGATIVE_OFFSET, DEFAULT_OFFSET)
+                .getWidgetWidth();
 
-            assertThat(widgetWidthAfterResize).isLessThan(previousWidgetWidth);
-        } finally {
-            api.dashboardClient().resetWidgetToDefaults();
-        }
+        assertThat(widgetWidthAfterResize).isLessThan(previousWidgetWidth);
     }
 }
