@@ -9,7 +9,9 @@ import static org.aeonbits.owner.Config.LoadType;
 @LoadPolicy(LoadType.MERGE)
 @Sources("classpath:config.properties")
 public interface Configuration extends Config {
+
     @Key("base.url")
+    @ConverterClass(SystemPropertiesConvertor.class)
     String baseUrl();
 
     @Key("parallel.threads")
