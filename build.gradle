@@ -11,6 +11,13 @@ repositories {
     mavenCentral()
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectName", "report-portal-taf-sample_gitlab"
+        property "sonar.projectKey", "report-portal-taf-sample_gitlab"
+    }
+}
+
 def junit5Version = '5.9.2'
 def selenideVersion = '6.13.1'
 def slf4jVersion = '2.0.7'
