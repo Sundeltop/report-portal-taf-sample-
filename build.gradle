@@ -30,6 +30,7 @@ def log4jVersion = '2.20.0'
 def ownerVersion = '1.0.12'
 def commonsCodecVersion = '1.15'
 def jacksonVersion = '2.15.1'
+def reportPortalVersion = '5.1.7'
 
 dependencies {
     implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
@@ -48,6 +49,7 @@ dependencies {
     implementation "org.aeonbits.owner:owner-java8:${ownerVersion}"
     implementation "commons-codec:commons-codec:${commonsCodecVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.epam.reportportal:agent-java-junit5:${reportPortalVersion}"
 }
 
 test {
