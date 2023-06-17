@@ -1,1 +1,2 @@
 com.epam.extensions.shared.LoggingExtension
+com.epam.extensions.shared.SlackMessageExtension
