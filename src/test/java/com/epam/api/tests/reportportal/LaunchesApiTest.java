@@ -3,6 +3,7 @@ package com.epam.api.tests.reportportal;
 import com.epam.api.RestResponse;
 import com.epam.api.pojos.GetLaunchResponse;
 import com.epam.api.tests.BaseApiTest;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,7 @@ public class LaunchesApiTest extends BaseApiTest {
     // GET
 
     @Test
+    @Story("MDP-1")
     void verifyGetAllLaunches() {
         api.launchClient().createLaunch(TEST_LAUNCH_NAME);
 

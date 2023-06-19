@@ -2,13 +2,15 @@ package com.epam.config;
 
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.Sources;
-import org.checkerframework.checker.units.qual.K;
 
 import static org.aeonbits.owner.Config.LoadPolicy;
 import static org.aeonbits.owner.Config.LoadType;
 
 @LoadPolicy(LoadType.MERGE)
-@Sources("classpath:config.properties")
+@Sources({
+        "classpath:config.properties",
+        "classpath:jira.properties",
+})
 public interface Configuration extends Config {
 
     @Key("base.url")
@@ -27,4 +29,13 @@ public interface Configuration extends Config {
     @Key("slack.token")
     @ConverterClass(SystemPropertiesConvertor.class)
     String slackToken();
+
+    @Key("jira.host")
+    String jiraHost();
+
+    @Key("jira.username")
+    String jiraUsername();
+
+    @Key("jira.password")
+    String jiraPassword();
 }

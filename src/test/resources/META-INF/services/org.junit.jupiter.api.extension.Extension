@@ -1,3 +1,4 @@
 com.epam.extensions.shared.LoggingExtension
 com.epam.extensions.shared.SlackMessageExtension
+com.epam.extensions.shared.JiraExtension
 com.epam.reportportal.junit5.ReportPortalExtension
