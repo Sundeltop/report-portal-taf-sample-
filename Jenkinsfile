@@ -6,6 +6,11 @@ pipeline {
         gradle "gradle"
     }
 
+    environment {
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
+        HOST = credentials('HOST')
+    }
+
     parameters {
         booleanParam(defaultValue: true, name: 'api')
         booleanParam(defaultValue: false, name: 'ui')
@@ -23,7 +28,7 @@ pipeline {
                 expression { return params.api }
             }
             steps {
-                sh './gradlew test --tests com.epam.api.tests.* -Dbase.url=http://192.168.0.4:8080'
+                sh './gradlew test --tests com.epam.api.tests.* -Dbase.url=$HOST:8080'
             }
         }
         stage('UI') {
@@ -31,7 +36,7 @@ pipeline {
                 expression { return params.ui }
             }
             steps {
-                sh './gradlew test --tests com.epam.ui.tests.* -Dselenide.headless=true -Dbase.url=http://192.168.0.4:8080'
+                sh './gradlew test --tests com.epam.ui.tests.* -Dselenide.headless=true -Dbase.url=$HOST:8080'
             }
         }
     }
@@ -41,7 +46,7 @@ pipeline {
                     reportBuildPolicy: 'ALWAYS',
                     results: [[path: 'build/allure-results']]
             ])
-            sh './gradlew sonarqube -Dsonar.token=sqp_743dc947795ef998d1be107bf86731d94be2974f -Dsonar.host.url=http://192.168.0.4:9000'
+            sh './gradlew sonarqube -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$HOST:9000'
         }
     }
 }
