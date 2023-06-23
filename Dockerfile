@@ -7,4 +7,4 @@ WORKDIR /opt/app
 
 RUN gradle -no-daemon clean
 
-CMD ["gradle","--no-daemon","test","-Dbase.url=http://192.168.0.4:8080","--tests","com.epam.api.tests.*"]
+CMD ["gradle","--no-daemon","test","-Dbase.url=http://localhost:8080","--tests","com.epam.api.tests.*"]
